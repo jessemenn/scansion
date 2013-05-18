@@ -16,6 +16,19 @@ def nsyl(word):
   else:
      return min([len([y for y in x if isdigit(y[-1])]) for x in d[lowercase]])
 
+def replED(word):
+  if (len(word) > 1):
+    oorgle = list(word)
+    if ((word[-2] == "'") and (word[-1] == 'd')):
+      oorgle[-2] = "e"
+      word = ''.join(oorgle)
+    if ((word[-2] == "'") and (word[-1] == 'n')):
+      oorgle[-2] = "e"
+      word = ''.join(oorgle)
+  for punct in string.punctuation:
+    word = word.replace(punct," ")
+  return word
+
 d = cmudict.dict()
 
 ################## open file ##################
@@ -26,25 +39,32 @@ fp = open("pope_windsor_forest.txt")
 data = fp.read()
 data = data.split('\n') ## line breaking.
 
-
-exclude = set(string.punctuation)
-
+# exclude = set(string.punctuation)
+exclude = set('!"#$%&()*+,-./:;<=>?@[\\]^_`{|}~')
 
 lines = []
 
-for woot in data:
-  woot = ''.join(ch for ch in woot if ch not in exclude)
-  lines.append(nltk.wordpunct_tokenize(woot))
-#  lines.append(nltk.WhitespaceTokenizer().tokenize(woot))
+for datum in data:
+  datum = ''.join(ch for ch in datum if ch not in exclude)
+  temps = nltk.WhitespaceTokenizer().tokenize(datum)
+  argy = []
+  bargy = ''
+  i = 0
+  for temp in temps:
+    argy = replED(temp)
+    temps[i] = argy
+    i = i + 1 #counter
+    bargy = ' '.join(temps)
+  lines.append(nltk.wordpunct_tokenize(bargy))
+
+#  datum = ''.join(ch for ch in datum)
+#  lines.append(nltk.WhitespaceTokenizer().tokenize(datum))
 
 for line in lines:
   line = nltk.Text(line)
 
-########### begin doing stuff ###########
-
 regexp = "[A-Za-z]+"
 exp = re.compile(regexp)
-
 
 ############### debug stuff:
 global dunno # not found in dict
@@ -53,7 +73,6 @@ fuck = 0  # wrong count
 lineFuck = 0 # line has a word not in dict
 trueError = 0 # actual errors
 ################
-
 for line in lines:
   sum1 = 0
   lineFuck = 0
