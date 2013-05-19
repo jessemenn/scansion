@@ -26,7 +26,7 @@ def replED(word):
       oorgle[-2] = "e"
       word = ''.join(oorgle)
   for punct in string.punctuation:
-    word = word.replace(punct," ")
+    word = word.replace(punct,"")
   return word
 
 d = cmudict.dict()
@@ -41,8 +41,19 @@ data = data.split('\n') ## line breaking.
 
 # exclude = set(string.punctuation)
 exclude = set('!"#$%&()*+,-./:;<=>?@[\\]^_`{|}~')
+  # exclude all string.punctuation except apostrophe (I think?)
+  # note that i remove all of string.punctuation at the end of
+  # the replED function
+lines = []  #to store the poem
 
-lines = []
+
+
+# This is really ugly, but, I needed to replace -'d endings
+# with -ed endings, and the only place I could think of doing
+# it was when first creating the lines.
+# As this loop starts, apostrophes should be the only punctuation
+# in the word. After replED, that apostrophe (and anything else
+# I missed in exclude) should be stripped out.
 
 for datum in data:
   datum = ''.join(ch for ch in datum if ch not in exclude)
