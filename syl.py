@@ -8,13 +8,13 @@ import string
 
 def nsyl(word):
   lowercase = word.lower()
-  if lowercase not in d:
+  if lowercase not in cmu:
     print lowercase,' not in dictionary'
     global dunno        ## be careful with this stupidity
     dunno = dunno + 1  ## be careful with this stupidity
     return 0
   else:
-     return min([len([y for y in x if isdigit(y[-1])]) for x in d[lowercase]])
+     return min([len([y for y in x if isdigit(y[-1])]) for x in cmu[lowercase]])
 
 def replED(word):
   if (len(word) > 1):
@@ -29,13 +29,25 @@ def replED(word):
     word = word.replace(punct,"")
   return word
 
-d = cmudict.dict()
+def stripEndings(word):
+  
+
+
+
+def loadWebster(webster):
+  fp = open("words.txt")
+
+
+
+cmu = cmudict.dict()
+# webster = loadWebster(webster)
 
 ################## open file ##################
 tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
-#fp = open("sample.txt")
+# fp = open("sample.txt")
+# fp = open("frost_woods.txt")
 fp = open("pope_windsor_forest.txt")
-#fp = open("paradise_lost.txt")
+# fp = open("paradise_lost.txt")
 data = fp.read()
 data = data.split('\n') ## line breaking.
 
