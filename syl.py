@@ -30,12 +30,10 @@ def replED(word):
   return word
 
 def stripEndings(word):
-  
-
-
-
+  return 999
 def loadWebster(webster):
   fp = open("words.txt")
+  return 999
 
 
 
