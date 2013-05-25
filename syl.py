@@ -6,26 +6,44 @@ import nltk.data
 import pprint
 import string
 
-def nsyl(word):
-  lowercase = word.lower()
-  if lowercase not in cmu:
-    return 0
-  else:
-     return min([len([y for y in x if isdigit(y[-1])]) for x in cmu[lowercase]])
+# -- replaced by getMaxMin -- 
+# def nsyl(word):
+#   lowercase = word.lower()
+#   if lowercase not in cmu:
+#     return 0
+#   else:
+#      return min([len([y for y in x if isdigit(y[-1])]) for x in cmu[lowercase]])
+
+
 
 def getMaxMin(word):
   lowercase = word['word']
   if lowercase not in cmu:
     print lowercase,' not in dictionary'
+    lowercase = stripEndings(word)
     return word
   else:
     word['low'] = min([len([y for y in x if isdigit(y[-1])]) for x in cmu[lowercase]])
     word['high'] = max([len([y for y in x if isdigit(y[-1])]) for x in cmu[lowercase]])
     return word
 
-def loadWebster(webster):
-  fp = open("words.txt")
-  return 999
+def stripEndings(word):
+  temp = (word['word'])
+  if (len(temp) > 1):
+    tempCheck, tempLetter = temp[:-1], temp[-1]
+    print 'temp check: ',tempCheck
+  if (tempCheck in cmu):
+    a = tempCheck
+    '''
+      for some reason, if I try to run tempCheck through this second max, it gives
+      an error... changing it to a diff variable, (set after entering this if
+        statement, makes it okay. I don't understand why.)
+    '''
+    word['low'] = min([len([y for y in tempCheck if isdigit(y[-1])]) for tempCheck in cmu[tempCheck]])
+    print 'word["low"]: ',word['low']
+    word['high'] = max([len([y for y in a if isdigit(y[-1])]) for a in cmu[a]])
+    print 'word["high"]: ',word['high']
+  return word
 
 def replED(word):
   if (len(word) > 1):
@@ -40,6 +58,10 @@ def replED(word):
     word = word.replace(punct,"")
   return word
 
+def loadWebster(webster):
+  fp = open("words.txt")
+  return 999
+
 def scoring (lineObj):
   '''
     "Score" each line so that you get an idea of syllable count.
@@ -53,9 +75,9 @@ def scoring (lineObj):
     If shit's crazy, the line's probably pretty screwed up
       Score 0.
   '''
-  a = lineObj['minSyl']
-  b = lineObj['maxSyl']
-  c = abs(b - a)
+  a = lineObj['lower']
+  b = lineObj['upper']
+  c = abs(b - a)  # if negative, prolly something weird, print error msg
   if ((a == 10) and (b == 10)):
     lineObj['score'] = 2
   elif ((a <= 10) and (b >= 10)) and (c <= 3):
@@ -110,23 +132,18 @@ for line in lines:
 regexp = "[A-Za-z]+"
 exp = re.compile(regexp)
 
-
-def stripEndings(word):
-  ## strip s, ing, etc to check in dict
-  return 999
-
 for line in lines:
   words = [w.lower() for w in line]
-  lineObj = dict(line=line, maxSyl=0, minSyl=0, score=0)
+  lineObj = dict(line=line, upper=0, lower=0, score=0) ## change to upper/lower bounds
   for a in words:
     if (exp.match(a)):
       current = dict(word=a, low=0, high=0)
       current = getMaxMin(current)
-      lineObj['minSyl'] = lineObj['minSyl'] + current['low']
-      lineObj['maxSyl'] = lineObj['maxSyl'] + current['high']
+      lineObj['lower'] = lineObj['lower'] + current['low']
+      lineObj['upper'] = lineObj['upper'] + current['high']
   lineObj = scoring(lineObj)
   print '***************************************************************'
   print lineObj['line'],'has a score of: ',lineObj['score']
-  print '         ',lineObj['minSyl']
-  print '         ',lineObj['maxSyl']
+  print '         ',lineObj['lower']
+  print '         ',lineObj['upper']
   print '***************************************************************'
