@@ -14,7 +14,37 @@ import string
 #   else:
 #      return min([len([y for y in x if isdigit(y[-1])]) for x in cmu[lowercase]])
 
+VOWELS = ['a', 'e', 'i', 'o', 'u', 'y']
 
+def dumbGuess(word):
+  numSyl = 0
+  numVowels = 0
+  lastVowel = False
+  for ch in word['word']:
+    isVowel = False
+    for v in VOWELS:
+      if ((v == ch) and (lastVowel)):
+        isVowel = True
+        lastVowel = True
+      elif ((v == ch) and not (lastVowel)):
+        numVowels = numVowels + 1
+        isVowel = True
+        lastVowel = True
+    if not isVowel:
+      lastVowel = False
+  word['low'] = numVowels
+  word['high'] = numVowels
+  print ' -- from dumbGuess --'
+  print '   word: ',word['word'],' syl: ', word['low']
+  return word
+
+def checkCMU(word):
+  found = True
+  lowercase = word['word']
+  if lowercase not in cmu:
+    print lowercase,' not in dictionary'
+    found = False
+  return found
 
 def getMaxMin(word):
   lowercase = word['word']
@@ -35,7 +65,7 @@ def stripEndings(word):
   if (tempCheck in cmu):
     a = tempCheck
     '''
-      for some reason, if I try to run tempCheck through this second max, it gives
+      for some reason, if I try to run tempCheck through the below, it gives
       an error... changing it to a diff variable, (set after entering this if
         statement, makes it okay. I don't understand why.)
     '''
@@ -43,6 +73,8 @@ def stripEndings(word):
     print 'word["low"]: ',word['low']
     word['high'] = max([len([y for y in a if isdigit(y[-1])]) for a in cmu[a]])
     print 'word["high"]: ',word['high']
+  else:
+    word = dumbGuess(word)
   return word
 
 def replED(word):
@@ -64,6 +96,7 @@ def loadWebster(webster):
 
 def scoring (lineObj):
   '''
+    ** Eventually need to take these parameters from an input file **
     "Score" each line so that you get an idea of syllable count.
     By taking a range, it allows some mild wiggle room later, perhaps by
       multiplying by number of lines, We'll be able to get relatively close
@@ -139,6 +172,8 @@ for line in lines:
     if (exp.match(a)):
       current = dict(word=a, low=0, high=0)
       current = getMaxMin(current)
+      # if ((current['low'] == 0) and (current['high'] == 0)):
+      #   current = dumbGuess(current)
       lineObj['lower'] = lineObj['lower'] + current['low']
       lineObj['upper'] = lineObj['upper'] + current['high']
   lineObj = scoring(lineObj)
