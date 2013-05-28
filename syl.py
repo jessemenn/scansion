@@ -32,6 +32,9 @@ def dumbGuess(word):
         lastVowel = True
     if not isVowel:
       lastVowel = False
+  temp = word['word']
+  if (temp[-1] == 'e'):
+    numVowels = numVowels - 1
   word['low'] = numVowels
   word['high'] = numVowels
   print ' -- from dumbGuess --'
@@ -113,9 +116,9 @@ def scoring (lineObj):
   c = abs(b - a)  # if negative, prolly something weird, print error msg
   if ((a == 10) and (b == 10)):
     lineObj['score'] = 2
-  elif ((a <= 10) and (b >= 10)) and (c <= 3):
+  elif ((a <= 10) and (b >= 10)):
     lineObj['score'] = 1
-  elif (c > 3) or (a > 10) or (b < 10):
+  elif (a > 10) or (b < 10):
     lineObj['score'] = 0
   return lineObj
 
@@ -126,8 +129,8 @@ cmu = cmudict.dict()
 tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
 # fp = open("sample.txt")
 # fp = open("frost_woods.txt")
-fp = open("pope_windsor_forest.txt")
-# fp = open("paradise_lost.txt")
+# fp = open("pope_windsor_forest.txt")
+fp = open("paradise_lost.txt")
 data = fp.read()
 data = data.split('\n') ## line breaking.
 
@@ -165,6 +168,16 @@ for line in lines:
 regexp = "[A-Za-z]+"
 exp = re.compile(regexp)
 
+
+
+good = 0
+bad = 0
+sorta = 0
+lineCount = 0
+
+
+
+
 for line in lines:
   words = [w.lower() for w in line]
   lineObj = dict(line=line, upper=0, lower=0, score=0) ## change to upper/lower bounds
@@ -182,3 +195,14 @@ for line in lines:
   print '         ',lineObj['lower']
   print '         ',lineObj['upper']
   print '***************************************************************'
+  lineCount = lineCount + 1
+  if (lineObj['score'] == 2):
+    good = good + 1
+  elif (lineObj['score'] == 1):
+    sorta = sorta + 1
+  elif (lineObj['score'] == 0):
+    bad = bad + 1
+print 'total lines: ',lineCount
+print 'good:        ',good
+print 'bad:         ',bad
+print 'sorta:       ',sorta
