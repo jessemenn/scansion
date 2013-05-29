@@ -33,7 +33,7 @@ def dumbGuess(word):
     if not isVowel:
       lastVowel = False
   temp = word['word']
-  if (temp[-1] == 'e'):
+  if (temp[-2] == 'es') or (temp[-1] == 'e'):
     numVowels = numVowels - 1
   word['low'] = numVowels
   word['high'] = numVowels
@@ -129,8 +129,8 @@ cmu = cmudict.dict()
 tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
 # fp = open("sample.txt")
 # fp = open("frost_woods.txt")
-# fp = open("pope_windsor_forest.txt")
-fp = open("paradise_lost.txt")
+fp = open("pope_windsor_forest.txt")
+# fp = open("paradise_lost.txt")
 data = fp.read()
 data = data.split('\n') ## line breaking.
 
