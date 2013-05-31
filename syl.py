@@ -81,6 +81,9 @@ def stripEndings(word):
   return word
 
 def replED(word):
+  if (len(word) > 1):       #replace hyphen w/ a space
+    for punct in set('-'):
+      word = word.replace(punct,' ')
   if (len(word) > 1):
     oorgle = list(word)
     if ((word[-2] == "'") and (word[-1] == 'd')):
@@ -135,8 +138,9 @@ data = fp.read()
 data = data.split('\n') ## line breaking.
 
 # exclude = set(string.punctuation)
-exclude = set('!"#$%&()*+,-./:;<=>?@[\\]^_`{|}~')
+exclude = set('!"#$%&()*+,./:;<=>?@[\\]^_`{|}~')
   # exclude all string.punctuation except apostrophe (I think?)
+  # and hyphen (29 may 2013)
   # note that i remove all of string.punctuation at the end of
   # the replED function
 lines = []  #to store the poem
