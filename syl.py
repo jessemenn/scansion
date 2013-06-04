@@ -15,6 +15,20 @@ import string
 #      return min([len([y for y in x if isdigit(y[-1])]) for x in cmu[lowercase]])
 
 VOWELS = ['a', 'e', 'i', 'o', 'u', 'y']
+DIPHTHONGS = ['aa', 'ae', 'ai', 'ao', 'au',
+              'ea', 'ee', 'ei', 'eo', 'eu',
+              'ia', 'ie', 'ii', 'io', 'iu',
+              'oa', 'oe', 'oi', 'oo', 'ou'
+              'ua', 'ue', 'ui', 'uo', 'uu']
+
+
+def getStress(word):
+  '''
+    temp = cmu(word['word]) returns pronunciation
+    temp = temp[0]
+    temp = [i[-1] for i in cmu if i[-1].isdigit()]
+
+  '''
 
 def dumbGuess(word):
   numSyl = 0
@@ -130,11 +144,15 @@ cmu = cmudict.dict()
 
 ################## open file ##################
 tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
-# fp = open("sample.txt")
+fp = open("sample.txt")
+# fp = open("collier.txt")
 # fp = open("frost_woods.txt")
-fp = open("pope_windsor_forest.txt")
+# fp = open("pope_windsor_forest.txt")
 # fp = open("paradise_lost.txt")
+# fp = open("sonnet_xv.txt")
+# fp = open("thomson_seasons.txt")
 data = fp.read()
+
 data = data.split('\n') ## line breaking.
 
 # exclude = set(string.punctuation)
@@ -172,15 +190,10 @@ for line in lines:
 regexp = "[A-Za-z]+"
 exp = re.compile(regexp)
 
-
-
 good = 0
 bad = 0
 sorta = 0
 lineCount = 0
-
-
-
 
 for line in lines:
   words = [w.lower() for w in line]
@@ -189,6 +202,7 @@ for line in lines:
     if (exp.match(a)):
       current = dict(word=a, low=0, high=0)
       current = getMaxMin(current)
+      # print current['word'], current['stressPattern']
       # if ((current['low'] == 0) and (current['high'] == 0)):
       #   current = dumbGuess(current)
       lineObj['lower'] = lineObj['lower'] + current['low']
@@ -196,8 +210,8 @@ for line in lines:
   lineObj = scoring(lineObj)
   print '***************************************************************'
   print lineObj['line'],'has a score of: ',lineObj['score']
-  print '         ',lineObj['lower']
-  print '         ',lineObj['upper']
+  print '   Lower bounds: ',lineObj['lower']
+  print '   Upper bounds: ',lineObj['upper']
   print '***************************************************************'
   lineCount = lineCount + 1
   if (lineObj['score'] == 2):
