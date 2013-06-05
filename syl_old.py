@@ -6,20 +6,13 @@ import nltk.data
 import pprint
 import string
 
-# -- replaced by getMaxMin -- 
-# def nsyl(word):
-#   lowercase = word.lower()
-#   if lowercase not in cmu:
-#     return 0
-#   else:
-#      return min([len([y for y in x if isdigit(y[-1])]) for x in cmu[lowercase]])
-
 VOWELS = ['a', 'e', 'i', 'o', 'u', 'y']
 DIPHTHONGS = ['aa', 'ae', 'ai', 'ao', 'au',
               'ea', 'ee', 'ei', 'eo', 'eu',
               'ia', 'ie', 'ii', 'io', 'iu',
               'oa', 'oe', 'oi', 'oo', 'ou'
               'ua', 'ue', 'ui', 'uo', 'uu']
+CMU = cmudict.dict()
 
 
 def getStress(word):
@@ -144,13 +137,14 @@ cmu = cmudict.dict()
 
 ################## open file ##################
 tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
-fp = open("sample.txt")
+# fp = open("sample.txt")
 # fp = open("collier.txt")
 # fp = open("frost_woods.txt")
 # fp = open("pope_windsor_forest.txt")
 # fp = open("paradise_lost.txt")
 # fp = open("sonnet_xv.txt")
 # fp = open("thomson_seasons.txt")
+fp = open("annus.txt")
 data = fp.read()
 
 data = data.split('\n') ## line breaking.
