@@ -141,10 +141,10 @@ tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
 # fp = open("collier.txt")
 # fp = open("frost_woods.txt")
 # fp = open("pope_windsor_forest.txt")
-# fp = open("paradise_lost.txt")
+fp = open("paradise_lost.txt")
 # fp = open("sonnet_xv.txt")
 # fp = open("thomson_seasons.txt")
-fp = open("annus.txt")
+# fp = open("annus.txt")
 data = fp.read()
 
 data = data.split('\n') ## line breaking.

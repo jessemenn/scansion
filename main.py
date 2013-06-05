@@ -18,8 +18,6 @@ import string
 					--	maybe this should include what was replaced
 '''
 
-
-
 VOWELS = ['a', 'e', 'i', 'o', 'u', 'y']
 DIPHTHONGS = ['aa', 'ae', 'ai', 'ao', 'au',
               'ea', 'ee', 'ei', 'eo', 'eu',
@@ -44,17 +42,37 @@ def main(filename):
 	poem = [] #the poem, by line, will go here
 	poem = openFile(poem, filename)
 	poem = makeWords(poem)
-
+	procLine(poem)
 
 ## output
 	i = 0
 	for p in poem:
 		print poem[i]
 		for word in poem[i]:
-			print word['word'].lower(), word['low'], word['high'], word['repl']
+			print word['word'].lower(), word['low'], word['high'], word['repl'], word['inDict']
 		i = i+1
 
+def procLine(poem):
+	'''
+		Recieves poem (the full poem)
+		Checks each word in the poem
+	'''
+	for line in poem:
+		for w in line:
+			w['inDict'] = checkDict(w)
+			if w['inDict']:
+				getSyl(w)
 
+def checkDict(word):
+	'''
+		Takes word (a dict). Returns a boolean.
+		Checks the word['word'] for existence in the CMU dict.
+	'''
+	found = True
+	lowercase = word['word'].lower()
+	if lowercase not in CMU:
+		found = False
+	return found
 
 def makeWords(poem):
 	'''
@@ -69,7 +87,7 @@ def makeWords(poem):
 	for line in poem:
 		tempLine = []
 		for word in line:
-			temp = dict(word='', low=0, high=0, repl=False)
+			temp = dict(word='', low=0, high=0, repl=False, inDict=False)
 			temp['word'] = word
 			tempLine.append(temp)
 		tempPoem.append(tempLine)
