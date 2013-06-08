@@ -3,6 +3,57 @@
 ## -- functions -- ##
 from settings import *
 
+def getSyl(word):
+	'''
+		Takes dictionary "word." Finds min/max syl count.
+		Stores results in word['low'] and word['high'], respectively.
+		If in CMU, use that. Otherwise, use dumbGuess.
+	'''
+	if (word['inDict'] == True):
+		try:
+			lowercase = word['word']
+		except KeyError:
+			lowercase = word['word'][:-1]
+		word['low'], word['high'] = getSylCMU(lowercase)
+	else:
+		lowercase = word['word']
+		word['low'], word['high'] = dumbGuess(lowercase)
+
+def getSylCMU(lowercase):
+	'''
+		Receives lowercase (a string).
+		Returns two values, low and high.
+		Checks CMU[dict] for the minimum and maximum syllable counts
+	'''
+	low = min([len([y for y in x if isdigit(y[-1])]) for x in CMU[lowercase]])
+	high = max([len([y for y in x if isdigit(y[-1])]) for x in CMU[lowercase]])
+	return low, high
+
+def dumbGuess(lowercase):
+	'''
+		Receives lowercase (a string).
+		Returns two values, low and high.
+		Runs a dumb heuristic to determine a dumb syllable count.
+	'''
+	numSyl = 0
+	numVowels = 0
+	lastVowel = False
+	for ch in lowercase:
+		isVowel = False
+		for v in VOWELS:
+			if ((v == ch) and (lastVowel)):
+				isVowel = True
+				lastVowel = True
+			elif ((v == ch) and not (lastVowel)):
+				numVowels = numVowels + 1
+				isVowel = True
+				lastVowel = True
+		if not isVowel:
+			lastVowel = False
+	if (lowercase[-2] == 'es') or (lowercase[-1] == 'e'):
+		numVowels = numVowels -1
+	return numVowels, numVowels ## low, and high
+
 def replaceHyphen(wordA, wordB):
 	'''
 		Recieves two 'word' as dict, wordB is blank.
@@ -43,8 +94,10 @@ def checkDict(word):
 		Takes string (such as something['word']). Returns a boolean.
 		Checks for existence of string in the CMU dict.
 	'''
-	found = True
+	found = True	
 	if word not in CMU:
+		if word[:-1] not in CMU:
+			found = False
 		found = False
 	return found
 

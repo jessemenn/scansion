@@ -26,14 +26,14 @@ def main(filename):
 	for line in poem: 
 		procLine(line)
 
-## output
-	i = 0
-	for p in poem:
-		print poem[i]
-		for word in poem[i]:
-			print word['word'], word['low'], word['high'], word['repl'], word['inDict']
-		i = i+1
-	print 'yes it ran'
+# ## output
+# 	i = 0
+# 	for p in poem:
+# 		print poem[i]
+# 		for word in poem[i]:
+# 			print word['word'], word['low'], word['high'], word['repl'], word['inDict']
+# 		i = i+1
+# 	print 'yes it ran'
 
 def procLine(line):
 	'''
@@ -42,43 +42,8 @@ def procLine(line):
 	'''
 	for w in line:
 		w['inDict'] = checkDict(w['word'])
-		if (w['inDict'] == True):
-				getSyl(w)
-		elif (w['inDict'] == False):
-			w['inDict'] = checkDict(w['word'][:-1])
-			if (w['inDict'] == True):
-				getSyl(w)
-			else:
-#				dumbGuess(w)
-				pass
-
-
-'''
-So this still ends up sending something like Brutes (not in, but Brute is).
-			elif (w['inDict'] == False):
-			w['inDict'] = checkDict(w['word'][:-1])
-			if (w['inDict'] == True):
-				getSyl(w)
-			else:
-				dumbGuess(w)
-Perhaps getSyl should take a string
-	or w['word] or w['word][:-1] for example
-	and return two values: low / high
-Rewrite to do this.
-'''
-
-def getSyl(word):
-	'''
-		Takes dictionary "word." Finds min/max syl count.
-		Stores results in word['low'] and word['high'], respectively.
-		If in CMU, use that. Otherwise, use dumbGuess.
-	'''
-	lowercase = word['word']
-	if (word['inDict']):
-		word['low'] = min([len([y for y in x if isdigit(y[-1])]) for x in CMU[lowercase]])
-		word['high'] = max([len([y for y in x if isdigit(y[-1])]) for x in CMU[lowercase]])
-
-
+		getSyl(w)
+		print w
 
 ## main
 if __name__ == '__main__':
