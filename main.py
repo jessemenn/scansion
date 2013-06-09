@@ -69,11 +69,11 @@ def prettyOutput(poem, wordCount=True, lineCount=True, numberLines=True, noteSub
                 if not(line['blank']):
                         procLine(line)
                         for w in line['line']:
-                                outstring += w['word']
                                 if(noteSubstitution):
                                         if(w['repl']): outstring += '*'
                                 if(noteDictionary):
                                         if not(w['inDict']): outstring += '!'
+                                outstring += w['word']
                                 if(wordCount):
                                         outstring += "(%d/%d) " %(w['low'], w['high'])
                                 else:
