@@ -23,7 +23,7 @@ def main(filename):
 	poem = openFile(poem, filename)
 	poem = makeWords(poem)
 
-        prettyOutput(poem)
+        prettyOutput(poem,noteDictionary=True)
 
 
 # ## output
@@ -52,12 +52,14 @@ def procLine(line):
 		line['upper'] += w['high']
 
 
-def prettyOutput(poem, wordCount=True, lineCount=True, numberLines=True):
+def prettyOutput(poem, wordCount=True, lineCount=True, numberLines=True, noteSubstitution=True,noteDictionary=False):
         '''
                 Takes a poem, a list of special 'line' datatype as input. Prints it out in a readable format. Default is to include
                 a line number, lower and upper bounds for syllable count of that line, and then each word from a line with lower/upper syllabe count in parentheses.
                 outputting of counts for words or lines can be turned off by passing False to wordCount or lineCount respectively. 
                 Line numbering can be turned off by passing numberLines=False.
+                This function can also note whether or not that word has been corrected for a substition (with an asterisk) and 
+                whether the word is in the dictionary (with an exclamation point).
         '''
         lineNo = 0
         for line in poem:
@@ -67,12 +69,17 @@ def prettyOutput(poem, wordCount=True, lineCount=True, numberLines=True):
                 if not(line['blank']):
                         procLine(line)
                         for w in line['line']:
+                                outstring += w['word']
+                                if(noteSubstitution):
+                                        if(w['repl']): outstring += '*'
+                                if(noteDictionary):
+                                        if not(w['inDict']): outstring += '!'
                                 if(wordCount):
-                                        outstring += "%s(%d/%d) " %(w['word'], w['low'], w['high'])
+                                        outstring += "(%d/%d) " %(w['low'], w['high'])
                                 else:
                                         outstring += "%s " %(w['word'])
                         if(lineCount):
-                                linetotal += " [%d/%d] |" %(line['lower'],line['upper'])
+                                linetotal += " [%3d/%3d] |" %(line['lower'],line['upper'])
 
                 lineNo += 1
 
