@@ -1,3 +1,9 @@
+'''
+DEFINTIONS:
+LINE: dict(line=[], lower=0, upper=0, blank=False)
+WORD: dict(word='', low=0, high=0, repl=False, inDict=False)
+'''
+
 import nltk
 from curses.ascii import isdigit
 from nltk.corpus import cmudict

@@ -23,8 +23,14 @@ def main(filename):
 	poem = openFile(poem, filename)
 	poem = makeWords(poem)
 
-	for line in poem: 
-		procLine(line)
+	for line in poem:
+		if (line['blank'] == False):
+			procLine(line)
+			for w in line['line']:
+				print w
+			print "Line's lower bounds: ",line['lower']
+			print "Line's Upper bounds: ",line['upper']
+			print "  ---  "
 
 # ## output
 # 	i = 0
@@ -35,15 +41,21 @@ def main(filename):
 # 		i = i+1
 # 	print 'yes it ran'
 
+
 def procLine(line):
 	'''
 		Recieves line of poem
-		Checks each word in the line
+			(dict w/ upper/lower/blank/line (list of words as dicts)
+		Checks each word in the line, gets syl count for word/line
 	'''
-	for w in line:
+		# for line in tempPoem:
+		# 	for word in line['line']:
+		# 		word['word']
+	for w in line['line']: #for each word in line['line']
 		w['inDict'] = checkDict(w['word'])
-		getSyl(w)
-		print w
+		getSyl(w) # get syl counts for each word
+		line['lower'] += w['low']
+		line['upper'] += w['high']
 
 ## main
 if __name__ == '__main__':

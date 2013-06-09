@@ -1,6 +1,9 @@
 
 ## -- jesse.py -- ##
 ## -- functions -- ##
+
+## -- contents of dictionary made in 'makeWords' -- ##
+
 from settings import *
 
 def getSyl(word):
@@ -50,7 +53,7 @@ def dumbGuess(lowercase):
 				lastVowel = True
 		if not isVowel:
 			lastVowel = False
-	if (lowercase[-2] == 'es') or (lowercase[-1] == 'e'):
+	if (lowercase[-2:] == 'es') or (lowercase[-1] == 'e'):
 		numVowels = numVowels -1
 	return numVowels, numVowels ## low, and high
 
@@ -103,7 +106,14 @@ def checkDict(word):
 
 def makeWords(poem):
 	'''
-		Takes list poem. Returns a list, tempPoem (a list of dicts).
+		Takes list poem.
+		Returns a list consisting of:
+			tempPoem: the poem as...
+				line (dictionary):
+					lower bounds for syl count
+					upper bounds for syl count
+					blank (bool) for blank line
+					line (list) for the list of words
 		Function iterates through poem, line by line, converting each
 		word of the poem into a python dict composed of:
 			word: word as string
@@ -111,10 +121,16 @@ def makeWords(poem):
 			high: minimum syl count
 			repl: if something's been replaced (like a 'd)
 			inDict: if the word is in the dictionary
+
+		for line in tempPoem:
+			for word in line['line']:
+				word['word']
 	'''
 	tempPoem = []
 	for line in poem:
-		tempLine = []
+		tempLine = dict(line=[], lower=0, upper=0, blank=False)
+		if (line == []):
+			tempLine['blank'] = True
 		for word in line:
 			temp = dict(word='', low=0, high=0, repl=False, inDict=False)
 			temp['word'] = word.lower()
@@ -124,11 +140,11 @@ def makeWords(poem):
 					# see replaceHyphen function for description
 				replaceStuff(temp)
 				replaceStuff(tempX)
-				tempLine.append(temp)
-				tempLine.append(tempX)
+				tempLine['line'].append(temp)
+				tempLine['line'].append(tempX)
 			else:
 				replaceStuff(temp)
-				tempLine.append(temp)
+				tempLine['line'].append(temp)
 		tempPoem.append(tempLine)
 	return tempPoem
 
@@ -150,5 +166,7 @@ def openFile(poem, filename):
 def printBlank(num, message):
 	''' Takes an integer and a message to print to screen for spacing
 	and/or debugging. '''
-	for x in xrange(1,num):
+	x = 0
+	while x < num:
 		print '---------------------- ',message,' ---------------------'
+		x += 1
