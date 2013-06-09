@@ -6,11 +6,11 @@ import settings
 	In makeWords function, I make each word into a dict that consists
 	of (see jesse.py):
 		word 	--	the word
-		low		--	int minimum syllable count for the word
+		low	--	int minimum syllable count for the word
 		high	--	int maximum syllable count for the word
 		repl 	--	bool whether a character replacement was made
-					--	maybe this should include what was replaced
-		inDict--  if word is in cmuDict
+				maybe this should include what was replaced
+                inDict  --  if word is in cmuDict
 '''
 ##				main
 def main(filename):
@@ -23,14 +23,8 @@ def main(filename):
 	poem = openFile(poem, filename)
 	poem = makeWords(poem)
 
-	for line in poem:
-		if (line['blank'] == False):
-			procLine(line)
-			for w in line['line']:
-				print w
-			print "Line's lower bounds: ",line['lower']
-			print "Line's Upper bounds: ",line['upper']
-			print "  ---  "
+        prettyOutput(poem)
+
 
 # ## output
 # 	i = 0
@@ -44,7 +38,7 @@ def main(filename):
 
 def procLine(line):
 	'''
-		Recieves line of poem
+		Receives line of poem
 			(dict w/ upper/lower/blank/line (list of words as dicts)
 		Checks each word in the line, gets syl count for word/line
 	'''
@@ -56,6 +50,37 @@ def procLine(line):
 		getSyl(w) # get syl counts for each word
 		line['lower'] += w['low']
 		line['upper'] += w['high']
+
+
+def prettyOutput(poem, wordCount=True, lineCount=True, numberLines=True):
+        '''
+                Takes a poem, a list of special 'line' datatype as input. Prints it out in a readable format. Default is to include
+                a line number, lower and upper bounds for syllable count of that line, and then each word from a line with lower/upper syllabe count in parentheses.
+                outputting of counts for words or lines can be turned off by passing False to wordCount or lineCount respectively. 
+                Line numbering can be turned off by passing numberLines=False.
+        '''
+        lineNo = 0
+        for line in poem:
+                outstring = ""
+                linetotal = ""
+
+                if not(line['blank']):
+                        procLine(line)
+                        for w in line['line']:
+                                if(wordCount):
+                                        outstring += "%s(%d/%d) " %(w['word'], w['low'], w['high'])
+                                else:
+                                        outstring += "%s " %(w['word'])
+                        if(lineCount):
+                                linetotal += " [%d/%d] |" %(line['lower'],line['upper'])
+
+                lineNo += 1
+
+                if(numberLines): linetotal = '%5d | %s' % (lineNo, linetotal)
+                print '%s %s' %(linetotal, outstring)
+
+                 
+
 
 ## main
 if __name__ == '__main__':
