@@ -23,18 +23,7 @@ def main(filename):
 	poem = openFile(poem, filename)
 	poem = makeWords(poem)
 
-        prettyOutput(poem,noteDictionary=True)
-
-
-# ## output
-# 	i = 0
-# 	for p in poem:
-# 		print poem[i]
-# 		for word in poem[i]:
-# 			print word['word'], word['low'], word['high'], word['repl'], word['inDict']
-# 		i = i+1
-# 	print 'yes it ran'
-
+	prettyOutput(poem,noteDictionary=True)
 
 def procLine(line):
 	'''
