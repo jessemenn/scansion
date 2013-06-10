@@ -1,6 +1,23 @@
 from jesse import *
 import settings
 
+
+'''
+	4:15am June 10:
+	def getStress(cmu):
+		return [i[-1] for i in d if i[-1].isdigit()
+	example:
+	cmu = cmudict.dict()
+	word = d['alkaline']
+	word = [['AE1', 'L', 'K', 'AH0', 'L', 'AY2', 'N']]
+	stress(word[0]) # note list of list.
+	will give back ['1', '0', '2']
+'''
+
+
+
+
+
 '''
 	The main routine is in main(filename), the first defined function.
 	In makeWords function, I make each word into a dict that consists
