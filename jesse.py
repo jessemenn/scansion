@@ -66,12 +66,25 @@ def replaceHyphen(wordA, wordB):
 			to the split word. Split it at the space (thus making a list?). Set 
 			wordA to 1st item of temp; wordB to 2nd item. Return both words (as dict)
 	'''
+	counter = 0
+	for ch in wordA['word']:
+		if (ch == '-'):
+			counter += 1
+	if ((counter == 1) and (wordA['word'][-1]=='-')):
+		wordB['lastChar'] = True
+### lastChar means the only hyphen is at the end.
+### note this is stored in tempX the added word...
 	for punct in set('-'):
 		wordA['word'] = wordA['word'].replace(punct, ' ')
 	temp = wordA['word']
-	temp = temp.split(' ')
-	wordA['word'] = temp[0]
-	wordB['word'] = temp[1]
+
+	if (wordB['lastChar'] == True):
+		temp = temp.split(' ')
+		wordA['word'] = temp[0]
+		wordB['word'] = ' '
+	else:
+		wordA['word'] = temp[0]
+		wordB['word'] = temp[1]
 	return wordA, wordB
 
 def replaceStuff(word):
@@ -135,13 +148,17 @@ def makeWords(poem):
 			temp = dict(word='', low=0, high=0, repl=False, inDict=False)
 			temp['word'] = word.lower()
 			if '-' in temp['word']:
-				tempX = dict(word='', low=0, high=0, repl=False, inDict=False)
+				tempX = dict(word='', low=0, high=0, repl=False, inDict=False, lastChar=False)
 				temp, tempX = replaceHyphen(temp, tempX)
 					# see replaceHyphen function for description
-				replaceStuff(temp)
-				replaceStuff(tempX)
-				tempLine['line'].append(temp)
-				tempLine['line'].append(tempX)
+				if (tempX['lastChar'] == False):
+					replaceStuff(temp)
+					tempLine['line'].append(temp)
+					replaceStuff(tempX)
+					tempLine['line'].append(tempX)
+				else:
+					replaceStuff(temp)
+					tempLine['line'].append(temp)
 			else:
 				replaceStuff(temp)
 				tempLine['line'].append(temp)
