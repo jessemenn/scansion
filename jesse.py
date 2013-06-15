@@ -65,6 +65,7 @@ def replaceHyphen(wordA, wordB):
 		Note, this is really clumsy... replace hyphen in A with a space. Set temp
 			to the split word. Split it at the space (thus making a list?). Set 
 			wordA to 1st item of temp; wordB to 2nd item. Return both words (as dict)
+			UNLESS the hyphen is at the last character.
 	'''
 	counter = 0
 	for ch in wordA['word']:
@@ -83,6 +84,7 @@ def replaceHyphen(wordA, wordB):
 		wordA['word'] = temp[0]
 		wordB['word'] = ' '
 	else:
+		temp = temp.split(' ')
 		wordA['word'] = temp[0]
 		wordB['word'] = temp[1]
 	return wordA, wordB
