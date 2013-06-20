@@ -1,23 +1,6 @@
 from jesse import *
 import settings
 
-
-'''
-	4:15am June 10:
-	def getStress(cmu):
-		return [i[-1] for i in d if i[-1].isdigit()
-	example:
-	cmu = cmudict.dict()
-	word = d['alkaline']
-	word = [['AE1', 'L', 'K', 'AH0', 'L', 'AY2', 'N']]
-	stress(word[0]) # note list of list.
-	will give back ['1', '0', '2']
-'''
-
-
-
-
-
 '''
 	The main routine is in main(filename), the first defined function.
 	In makeWords function, I make each word into a dict that consists
@@ -54,9 +37,29 @@ def procLine(line):
 	for w in line['line']: #for each word in line['line']
 		w['inDict'] = checkDict(w['word'])
 		getSyl(w) # get syl counts for each word
+
+#		getStress(w) # get stresses for each word
+
 		line['lower'] += w['low']
 		line['upper'] += w['high']
 
+# def getStress(w):
+# 	if (w['inDict'] == True):
+# 		fuckyeah = w['word']
+# 		fuckyeah = CMU[fuckyeah]
+# 		w['stress'] = doStress(fuckyeah)
+
+# def doStress(fuckyeah):
+# 	return [i[-1] for i in fuckyeah[0] if i[-1].isdigit()]
+
+			# def getStress(cmu):
+			# 	return [i[-1] for i in d if i[-1].isdigit()
+			# example:
+			# cmu = cmudict.dict()
+			# word = d['alkaline']
+			# word = [['AE1', 'L', 'K', 'AH0', 'L', 'AY2', 'N']]
+			# stress(word[0]) # note list of list.
+			# will give back ['1', '0', '2']
 
 def prettyOutput(poem, wordCount=True, lineCount=True, numberLines=True, noteSubstitution=True,noteDictionary=False):
         '''
@@ -86,15 +89,23 @@ def prettyOutput(poem, wordCount=True, lineCount=True, numberLines=True, noteSub
                                         outstring += "%s " %(w['word'])
                         if(lineCount):
                                 linetotal += " [%3d/%3d] |" %(line['lower'],line['upper'])
-
                 lineNo += 1
 
                 if(numberLines): linetotal = '%5d | %s' % (lineNo, linetotal)
                 print '%s %s' %(linetotal, outstring)
-
-                 
-
-
+#                printStress(line)
+'''
+def printStress(line):
+	output = ""
+	for word in line['line']:
+		for item in word['stress']:
+			if (word['low'] == 1) and (word['high'] == 1):
+				output += '8 '
+			else:
+				output += item
+				output += ' '
+	print output
+'''
 ## main
 if __name__ == '__main__':
 	if len(sys.argv) < 2:

@@ -136,6 +136,7 @@ def makeWords(poem):
 			high: minimum syl count
 			repl: if something's been replaced (like a 'd)
 			inDict: if the word is in the dictionary
+			stress: (list to eventually hold the stress symbols)
 
 		for line in tempPoem:
 			for word in line['line']:
@@ -147,10 +148,10 @@ def makeWords(poem):
 		if (line == []):
 			tempLine['blank'] = True
 		for word in line:
-			temp = dict(word='', low=0, high=0, repl=False, inDict=False)
+			temp = dict(word='', low=0, high=0, repl=False, inDict=False, stress=[])
 			temp['word'] = word.lower()
 			if '-' in temp['word']:
-				tempX = dict(word='', low=0, high=0, repl=False, inDict=False, lastChar=False)
+				tempX = dict(word='', low=0, high=0, repl=False, inDict=False, lastChar=False, stress=[])
 				temp, tempX = replaceHyphen(temp, tempX)
 					# see replaceHyphen function for description
 				if (tempX['lastChar'] == False):
