@@ -38,28 +38,37 @@ def procLine(line):
 		w['inDict'] = checkDict(w['word'])
 		getSyl(w) # get syl counts for each word
 
-#		getStress(w) # get stresses for each word
+		getStress(w) # get stresses for each word
 
 		line['lower'] += w['low']
 		line['upper'] += w['high']
 
-# def getStress(w):
-# 	if (w['inDict'] == True):
-# 		fuckyeah = w['word']
-# 		fuckyeah = CMU[fuckyeah]
-# 		w['stress'] = doStress(fuckyeah)
+def getStress(w):
+	if (w['inDict'] == True):
+		fuckyeah = w['word']
+		fuckyeah = CMU[fuckyeah]
+		w['stress'] = doStress(fuckyeah)
 
-# def doStress(fuckyeah):
-# 	return [i[-1] for i in fuckyeah[0] if i[-1].isdigit()]
+def doStress(fuckyeah):
+	if fuckyeah not in UNSTRESSED:
+		return [i[-1] for i in fuckyeah[0] if i[-1].isdigit()]
+	else:
+		return 0
 
-			# def getStress(cmu):
-			# 	return [i[-1] for i in d if i[-1].isdigit()
-			# example:
-			# cmu = cmudict.dict()
-			# word = d['alkaline']
-			# word = [['AE1', 'L', 'K', 'AH0', 'L', 'AY2', 'N']]
-			# stress(word[0]) # note list of list.
-			# will give back ['1', '0', '2']
+def printStress(line):
+	''' 
+		Takes the line. Prints out the stresses.
+		currently called from prettyOutput
+	'''
+	output = "       "
+	for word in line['line']:
+		if word['word'] not in UNSTRESSED:
+			for item in word['stress']:
+				output += item
+				output += ' '
+		else:
+			output += '* '
+	print output
 
 def prettyOutput(poem, wordCount=True, lineCount=True, numberLines=True, noteSubstitution=True,noteDictionary=False):
         '''
@@ -93,19 +102,9 @@ def prettyOutput(poem, wordCount=True, lineCount=True, numberLines=True, noteSub
 
                 if(numberLines): linetotal = '%5d | %s' % (lineNo, linetotal)
                 print '%s %s' %(linetotal, outstring)
-#                printStress(line)
-'''
-def printStress(line):
-	output = ""
-	for word in line['line']:
-		for item in word['stress']:
-			if (word['low'] == 1) and (word['high'] == 1):
-				output += '8 '
-			else:
-				output += item
-				output += ' '
-	print output
-'''
+                printStress(line)
+
+
 ## main
 if __name__ == '__main__':
 	if len(sys.argv) < 2:
