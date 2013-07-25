@@ -37,7 +37,7 @@ def procLine(line):
 	for w in line['line']: #for each word in line['line']
 		w['inDict'] = checkDict(w['word'])
 		getSyl(w) # get syl counts for each word
-
+#start stress
 		getStress(w) # get stresses for each word
 
 		line['lower'] += w['low']
@@ -45,13 +45,13 @@ def procLine(line):
 
 def getStress(w):
 	if (w['inDict'] == True):
-		fuckyeah = w['word']
-		fuckyeah = CMU[fuckyeah]
-		w['stress'] = doStress(fuckyeah)
+		lookup = w['word']
+		lookup = CMU[lookup]	
+		w['stress'] = doStress(lookup)
 
-def doStress(fuckyeah):
-	if fuckyeah not in UNSTRESSED:
-		return [i[-1] for i in fuckyeah[0] if i[-1].isdigit()]
+def doStress(lookup):
+	if lookup not in UNSTRESSED:
+		return [i[-1] for i in lookup[0] if i[-1].isdigit()]
 	else:
 		return 0
 
@@ -59,15 +59,21 @@ def printStress(line):
 	''' 
 		Takes the line. Prints out the stresses.
 		currently called from prettyOutput
+
+		If the word is not in UNSTRESSED and in the cmuDict, print it.
+		Otherwise print an asterisk for each syllable.
 	'''
 	output = "       "
 	for word in line['line']:
-		if word['word'] not in UNSTRESSED:
+		if word['word'] not in UNSTRESSED and word['inDict'] == True:
 			for item in word['stress']:
 				output += item
 				output += ' '
 		else:
-			output += '* '
+			i = 0
+			while(i < word['high']):
+				output += '* '
+				i += 1
 	print output
 
 def prettyOutput(poem, wordCount=True, lineCount=True, numberLines=True, noteSubstitution=True,noteDictionary=False):
@@ -102,7 +108,31 @@ def prettyOutput(poem, wordCount=True, lineCount=True, numberLines=True, noteSub
 
                 if(numberLines): linetotal = '%5d | %s' % (lineNo, linetotal)
                 print '%s %s' %(linetotal, outstring)
+# start stressings
                 printStress(line)
+# oorgle
+        createStressArray(poem[6])
+
+def createStressArray(line):
+	'''
+		Creates a list with the stresses of the line passed.
+		This list is checked against existing lists of candidate meters
+			(See settings.py)
+	'''
+	# Do syllable counts for line look good?
+	if (line['lower'] == line['upper']):
+		# if so, we're gonna do something! yay! Things!
+		# make list to hold stuff, descriptively called thing!
+		thing = []
+		booze = 0 #counter
+		# This just fills thing with tildes. 
+		while (booze < line['upper']):
+			thing.append('~')
+			booze += 1
+		print len(thing)
+		print (thing)
+		print thing[0]
+
 
 
 ## main
