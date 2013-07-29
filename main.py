@@ -14,7 +14,7 @@ import settings
 '''
 ##				main
 def main(filename):
-	'''
+	'''	
 	Main routine. Input is string filename (defined at call)
 	or the default: "sample.txt"
 	'''
@@ -22,59 +22,10 @@ def main(filename):
 	poem = [] #the poem, by line, will go here
 	poem = openFile(poem, filename)
 	poem = makeWords(poem)
-
 	prettyOutput(poem,noteDictionary=True)
-
-def procLine(line):
-	'''
-		Receives line of poem
-			(dict w/ upper/lower/blank/line (list of words as dicts)
-		Checks each word in the line, gets syl count for word/line
-	'''
-		# for line in tempPoem:
-		# 	for word in line['line']:
-		# 		word['word']
-	for w in line['line']: #for each word in line['line']
-		w['inDict'] = checkDict(w['word'])
-		getSyl(w) # get syl counts for each word
-#start stress
-		getStress(w) # get stresses for each word
-
-		line['lower'] += w['low']
-		line['upper'] += w['high']
-
-def getStress(w):
-	if (w['inDict'] == True):
-		lookup = w['word']
-		lookup = CMU[lookup]	
-		w['stress'] = doStress(lookup)
-
-def doStress(lookup):
-	if lookup not in UNSTRESSED:
-		return [i[-1] for i in lookup[0] if i[-1].isdigit()]
-	else:
-		return 0
-
-def printStress(line):
-	''' 
-		Takes the line. Prints out the stresses.
-		currently called from prettyOutput
-
-		If the word is not in UNSTRESSED and in the cmuDict, print it.
-		Otherwise print an asterisk for each syllable.
-	'''
-	output = "       "
-	for word in line['line']:
-		if word['word'] not in UNSTRESSED and word['inDict'] == True:
-			for item in word['stress']:
-				output += item
-				output += ' '
-		else:
-			i = 0
-			while(i < word['high']):
-				output += '* '
-				i += 1
-	print output
+	createStressArray(poem)
+	printStress(poem)
+	buildFullArray(poem)
 
 def prettyOutput(poem, wordCount=True, lineCount=True, numberLines=True, noteSubstitution=True,noteDictionary=False):
         '''
@@ -108,31 +59,86 @@ def prettyOutput(poem, wordCount=True, lineCount=True, numberLines=True, noteSub
 
                 if(numberLines): linetotal = '%5d | %s' % (lineNo, linetotal)
                 print '%s %s' %(linetotal, outstring)
-# start stressings
-                printStress(line)
-# oorgle
-        createStressArray(poem[6])
 
-def createStressArray(line):
+
+def createStressArray(poem):
 	'''
-		Creates a list with the stresses of the line passed.
-		This list is checked against existing lists of candidate meters
+		Takes poem from main. Creates a list from the stresses.
+		Stores this list in line['stressArray].
+		This list is checked against existing lists of candidate meters (eventually)
 			(See settings.py)
 	'''
-	# Do syllable counts for line look good?
-	if (line['lower'] == line['upper']):
-		# if so, we're gonna do something! yay! Things!
-		# make list to hold stuff, descriptively called thing!
-		thing = []
-		booze = 0 #counter
-		# This just fills thing with tildes. 
-		while (booze < line['upper']):
-			thing.append('~')
-			booze += 1
-		print len(thing)
-		print (thing)
-		print thing[0]
+	for line in poem:
+		# Do syllable counts for line look good?
+		if (line['lower'] == line['upper']):
+			# if so, we're gonna do something! yay! Things!
+			# make list to hold stuff, descriptively called thing!
+			thing = []
+			counter = 0 #count syllables
+			# This just fills thing with tildes.
+			for word in line['line']:
+				if word['word'] in UNSTRESSED:
+					thing.append(-1)
+				elif word['word'] not in UNSTRESSED and word['inDict']:
+					for item in word['stress']:
+						if item is '1':
+							thing.append(1)
+						if item is '2':
+							thing.append(1)
+						if item is '0':
+							thing.append(-1)
+				elif word['word'] not in UNSTRESSED and word['inDict'] == False:
+					while counter < word['high']:
+						thing.append(0)
+						counter += 1
+			line['stressArray'] = thing
 
+def printStress(poem):
+	''' 
+		Takes the poem. Prints out the list of stresses.
+		Called from main.
+	'''
+	output = ""
+	for line in poem:
+		output += str(line['stressArray']) # convert to string and concatenate to output
+		output += '\n' # and add a new line to make purdy
+	print output
+
+def buildFullArray(poem):
+	'''
+	Check each slot of line['stressArray'] and add/subtract from corresponding slot
+	in finalScores. By the end we'll know whether each syllable position is stressed
+	(positive) or unstressed (negative) or we're just plum not sure (zero). The higher
+	the absolute value of each slot, the surer we are.
+	For example, we'll end with something like:
+		[-10, 4, -8, 1, -12, 6, -12, 4, -6, 13, 0, 0]
+	which will be turned into:
+		[-1, 1, -1, 1, -1, 1, -1, 1, -1, 1, 0, 0]
+	'''
+# create a list of length w/ the largest upper bound, all w/ values of 0
+	maximum = 0
+	for line in poem:
+		if line['lower'] == line['upper'] == 10:
+			if maximum < line['upper']:
+				maximum = line['upper']
+	finalScores = [0]*maximum
+# Add or subtract from finalScores based on stressArray
+	for line in poem:
+		if line['lower'] == line['upper'] == 10:
+			counter = 0
+			for item in line['stressArray']:
+				finalScores[counter] += item
+				counter += 1
+	print finalScores
+# Turn finalScores into merely -1, 0, 1	(to check for stress patterns)
+	counter = 0
+	for item in finalScores:
+		if item < 0:
+			finalScores[counter] = -1
+		if item > 0:
+			finalScores[counter] = 1
+		counter += 1
+	print finalScores
 
 
 ## main

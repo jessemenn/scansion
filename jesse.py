@@ -6,6 +6,36 @@
 
 from settings import *
 
+def procLine(line):
+	'''
+		Receives line of poem
+			(dict w/ upper/lower/blank/line (list of words as dicts)
+		Checks each word in the line, gets syl count for word/line
+	'''
+		# for line in tempPoem:
+		# 	for word in line['line']:
+		# 		word['word']
+	for w in line['line']: #for each word in line['line']
+		w['inDict'] = checkDict(w['word'])
+		getSyl(w) # get syl counts for each word
+#start stress
+		getStress(w) # get stresses for each word
+
+		line['lower'] += w['low']
+		line['upper'] += w['high']
+
+def getStress(w):
+	if (w['inDict'] == True):
+		lookup = w['word']
+		lookup = CMU[lookup]	
+		w['stress'] = doStress(lookup)
+
+def doStress(lookup):
+	if lookup not in UNSTRESSED:
+		return [i[-1] for i in lookup[0] if i[-1].isdigit()]
+	else:
+		return 0
+
 def getSyl(word):
 	'''
 		Takes dictionary "word." Finds min/max syl count.
@@ -144,7 +174,7 @@ def makeWords(poem):
 	'''
 	tempPoem = []
 	for line in poem:
-		tempLine = dict(line=[], lower=0, upper=0, blank=False)
+		tempLine = dict(line=[], lower=0, upper=0, blank=False, stressArray=[])
 		if (line == []):
 			tempLine['blank'] = True
 		for word in line:

@@ -1,6 +1,6 @@
 '''
 DEFINTIONS:
-LINE: dict(line=[], lower=0, upper=0, blank=False)
+LINE: dict(line=[], lower=0, upper=0, blank=False, stressArray=[])
 WORD: dict(word='', low=0, high=0, repl=False, inDict=False, stress=[])
 '''
 
@@ -12,6 +12,7 @@ import string
 import sys
 import pprint
 import string
+
 '''
 	Settings file with:
 		import library statements
