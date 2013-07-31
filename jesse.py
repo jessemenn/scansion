@@ -6,6 +6,40 @@
 
 from settings import *
 
+def prettyOutput(poem, wordCount=True, lineCount=True, numberLines=True, noteSubstitution=True,noteDictionary=False):
+        '''
+                Takes a poem, a list of special 'line' datatype as input. Prints it out in a readable format. Default is to include
+                a line number, lower and upper bounds for syllable count of that line, and then each word from a line with lower/upper syllabe count in parentheses.
+                outputting of counts for words or lines can be turned off by passing False to wordCount or lineCount respectively. 
+                Line numbering can be turned off by passing numberLines=False.
+                This function can also note whether or not that word has been corrected for a substition (with an asterisk) and 
+                whether the word is in the dictionary (with an exclamation point).
+        '''
+        lineNo = 0
+        for line in poem:
+                outstring = ""
+                linetotal = ""
+
+                if not(line['blank']):
+                        procLine(line)
+                        for w in line['line']:
+                                if(noteSubstitution):
+                                        if(w['repl']): outstring += '*'
+                                if(noteDictionary):
+                                        if not(w['inDict']): outstring += '!'
+                                outstring += w['word']
+                                if(wordCount):
+                                        outstring += "(%d/%d) " %(w['low'], w['high'])
+                                else:
+                                        outstring += "%s " %(w['word'])
+                        if(lineCount):
+                                linetotal += " [%3d/%3d] |" %(line['lower'],line['upper'])
+                lineNo += 1
+
+                if(numberLines): linetotal = '%5d | %s' % (lineNo, linetotal)
+                print '%s %s' %(linetotal, outstring)
+
+
 def procLine(line):
 	'''
 		Receives line of poem
