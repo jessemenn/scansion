@@ -23,43 +23,41 @@ def main(filename):
 	poem = openFile(poem, filename)
 	poem = makeWords(poem)
 	prettyOutput(poem,noteDictionary=True)
+	beginStress(poem)
+
+def beginStress(poem):
+	'''
+		Called w/ poem.
+		Calls syllableMajority, createStressArray, printStress...
+	'''
 	createStressArray(poem)
 	printStress(poem)
+	
+	lineCounts = syllableMajority(poem)
+	print lineCounts
+	
 	buildFullArray(poem)
 
-def prettyOutput(poem, wordCount=True, lineCount=True, numberLines=True, noteSubstitution=True,noteDictionary=False):
-        '''
-                Takes a poem, a list of special 'line' datatype as input. Prints it out in a readable format. Default is to include
-                a line number, lower and upper bounds for syllable count of that line, and then each word from a line with lower/upper syllabe count in parentheses.
-                outputting of counts for words or lines can be turned off by passing False to wordCount or lineCount respectively. 
-                Line numbering can be turned off by passing numberLines=False.
-                This function can also note whether or not that word has been corrected for a substition (with an asterisk) and 
-                whether the word is in the dictionary (with an exclamation point).
-        '''
-        lineNo = 0
-        for line in poem:
-                outstring = ""
-                linetotal = ""
-
-                if not(line['blank']):
-                        procLine(line)
-                        for w in line['line']:
-                                if(noteSubstitution):
-                                        if(w['repl']): outstring += '*'
-                                if(noteDictionary):
-                                        if not(w['inDict']): outstring += '!'
-                                outstring += w['word']
-                                if(wordCount):
-                                        outstring += "(%d/%d) " %(w['low'], w['high'])
-                                else:
-                                        outstring += "%s " %(w['word'])
-                        if(lineCount):
-                                linetotal += " [%3d/%3d] |" %(line['lower'],line['upper'])
-                lineNo += 1
-
-                if(numberLines): linetotal = '%5d | %s' % (lineNo, linetotal)
-                print '%s %s' %(linetotal, outstring)
-
+def syllableMajority(poem):
+	'''
+		Recieves poem. Makes a list of 0s with length of largest upper syl count.
+		Counts the number of lines with syl counts.
+		4 lines of 10 syl; 8 lines of 11 syl, etc.
+		Returns lineCounts (list)
+	'''
+# create a list w/ length of the largest upper bound, all w/ values of 0
+	counter = 0
+	for line in poem:
+		if counter < line['upper']:
+			counter = line['upper']
+	lineCounts = [0]*counter
+# go through the lines to count lines of X syl
+	counter = 0
+	for line in poem:
+		if (line['upper']):
+			counter = line['upper']
+			lineCounts[counter-1] = lineCounts[counter-1] + 1
+	return lineCounts
 
 def createStressArray(poem):
 	'''
