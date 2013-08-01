@@ -23,6 +23,7 @@ def main(filename):
 	poem = openFile(poem, filename)
 	poem = makeWords(poem)
 	prettyOutput(poem,noteDictionary=True)
+
 	beginStress(poem)
 
 def beginStress(poem):

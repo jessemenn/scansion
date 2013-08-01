@@ -39,7 +39,17 @@ def prettyOutput(poem, wordCount=True, lineCount=True, numberLines=True, noteSub
                 if(numberLines): linetotal = '%5d | %s' % (lineNo, linetotal)
                 print '%s %s' %(linetotal, outstring)
 
-
+def printStress(poem):
+	''' 
+		Takes the poem. Prints out the list of stresses.
+		Called from main.
+	'''
+	output = ""
+	for line in poem:
+		output += str(line['stressArray']) # convert to string and concatenate to output
+		output += '\n' # and add a new line to make purdy
+	print output
+	
 def procLine(line):
 	'''
 		Receives line of poem
