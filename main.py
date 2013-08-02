@@ -23,7 +23,6 @@ def main(filename):
 	poem = openFile(poem, filename)
 	poem = makeWords(poem)
 	prettyOutput(poem,noteDictionary=True)
-
 	beginStress(poem)
 
 def beginStress(poem):
@@ -32,7 +31,7 @@ def beginStress(poem):
 		Calls syllableMajority, createStressArray, printStress...
 	'''
 	createStressArray(poem)
-	printStress(poem)
+	printStress(poem) 
 	
 	lineCounts = syllableMajority(poem)
 	print lineCounts
@@ -92,16 +91,6 @@ def createStressArray(poem):
 						counter += 1
 			line['stressArray'] = thing
 
-def printStress(poem):
-	''' 
-		Takes the poem. Prints out the list of stresses.
-		Called from main.
-	'''
-	output = ""
-	for line in poem:
-		output += str(line['stressArray']) # convert to string and concatenate to output
-		output += '\n' # and add a new line to make purdy
-	print output
 
 def buildFullArray(poem):
 	'''

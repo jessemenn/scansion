@@ -51,15 +51,24 @@ UNSTRESSED+= 'these those came come none one two three four five six eight nine 
 UNSTRESSED+= 'ah en et la may non off per re than un his'.split()
 
 # Disyllable and trisyllable poetic meters...
-PYRRHUS = ['0','0']
-IAMB = ['0','1']
-TROCHEE = ['1','0']
-SPONDEE = ['1', '1']
-TRIBRACH = ['0','0','0']
-DACTYL = ['1','0','0']
-AMPHIBRACH = ['0', '1', '0']
-ANAPEST = ['0', '0', '1']
-BACCHIUS = ['0', '1', '1']
-ANTIBACCHIUS = ['1', '1', '0']
-CRETIC = ['1', '0', '1']
-MOLOSSUS = ['1', '1', '1']
+PYRRHUS = [-1, -1]
+IAMB = [-1, 1]
+TROCHEE = [1, -1]
+SPONDEE = [1, 1]
+TRIBRACH = [-1, -1, -1]
+DACTYL = [1, -1, -1]
+AMPHIBRACH = [-1, 1, -1]
+ANAPEST = [-1, -1, 1]
+BACCHIUS = [-1, 1, 1]
+ANTIBACCHIUS = [1, 1, -1]
+CRETIC = [1, -1, 1]
+MOLOSSUS = [1, 1, 1]
+
+MONOMETER = 1
+DIMETER = 2
+TRIMETER = 3
+TETRAMETER = 4
+PENTAMETER = 5
+HEXAMETER = 6
+HEPTAMETER = 7
+OCTAMETER = 8 
