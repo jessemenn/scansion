@@ -31,11 +31,12 @@ def beginStress(poem):
 		Calls syllableMajority, createStressArray, printStress...
 	'''
 	createStressArray(poem)
-	printStress(poem) 
-	
+#	printStress(poem) 
 	lineCounts = syllableMajority(poem)
-	print lineCounts
-	
+	print "     ", "LineCounts: ",lineCounts
+	lineLen, freqLineLen = lineMajority(lineCounts)
+	print "     ","Most frequent syllable count: ", freqLineLen, " appears: ", lineLen
+
 	buildFullArray(poem)
 
 def syllableMajority(poem):
@@ -58,6 +59,21 @@ def syllableMajority(poem):
 			counter = line['upper']
 			lineCounts[counter-1] = lineCounts[counter-1] + 1
 	return lineCounts
+
+def lineMajority(lineCounts):
+	'''
+		Takes lineCounts, a list with length (max syllables in a line of the poem).
+		Finds the largest count of lines with N syllables (what syllable count
+			appears the most in the poem... lines of 10 syllables are most common).
+		Returns two values: N, and corresponding count
+	'''
+	maximum = 0	
+	count = 0
+	for line in lineCounts:
+		if line >= maximum:
+			maximum = line
+			count += 1
+	return maximum, count
 
 def createStressArray(poem):
 	'''
