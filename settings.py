@@ -72,3 +72,12 @@ PENTAMETER = 5
 HEXAMETER = 6
 HEPTAMETER = 7
 OCTAMETER = 8 
+
+
+#temporary possible forms:
+pyrhic_penta = PYRRHUS * PENTAMETER
+iambic_penta = IAMB * PENTAMETER
+trochaic_penta = TROCHEE * PENTAMETER
+pyrhic_tetra = PYRRHUS * TETRAMETER
+iambic_tetra = IAMB * TETRAMETER
+trochaic_tetra = TROCHEE * TETRAMETER
