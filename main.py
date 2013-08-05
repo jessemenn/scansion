@@ -80,37 +80,7 @@ def buildFullArray(poem, freqLineLen):
 		counter += 1
 	print "finalScores: ", finalScores, "  final for loop"
 
-def createStressArray(poem):
-	'''
-		Takes poem from main. Creates a list from the stresses.
-		Stores this list in line['stressArray].
-		This list is checked against existing lists of candidate meters (eventually)
-			(See settings.py)
-	'''
-	for line in poem:
-		# Do syllable counts for line look good?
-		if (line['lower'] == line['upper']):
-			# if so, we're gonna do something! yay! Things!
-			# make list to hold stuff, descriptively called thing!
-			thing = []
-			counter = 0 #count syllables
-			# This just fills thing with tildes.
-			for word in line['line']:
-				if word['word'] in UNSTRESSED:
-					thing.append(-1)
-				elif word['word'] not in UNSTRESSED and word['inDict']:
-					for item in word['stress']:
-						if item is '1':
-							thing.append(1)
-						if item is '2':
-							thing.append(1)
-						if item is '0':
-							thing.append(-1)
-				elif word['word'] not in UNSTRESSED and word['inDict'] == False:
-					while counter < word['high']:
-						thing.append(0)
-						counter += 1
-			line['stressArray'] = thing
+
 
 
 
