@@ -51,27 +51,6 @@ def printStress(poem):
 	print output
 
 
-def syllableMajority(poem):
-	'''
-		Recieves poem. Makes a list of 0s with length of largest upper syl count.
-		Counts the number of lines with syl counts.
-		4 lines of 10 syl; 8 lines of 11 syl, etc.
-		Returns lineCounts (list)
-	'''
-# create a list w/ length of the largest upper bound, all w/ values of 0
-	counter = 0
-	for line in poem:
-		if counter < line['upper']:
-			counter = line['upper']
-	lineCounts = [0]*counter
-# go through the lines to count lines of X syl
-	counter = 0
-	for line in poem:
-		if (line['upper']):
-			counter = line['upper']
-			lineCounts[counter-1] = lineCounts[counter-1] + 1
-	return lineCounts
-
 def lineMajority(lineCounts):
 	'''
 		Takes lineCounts, a list with length (max syllables in a line of the poem).
@@ -88,7 +67,27 @@ def lineMajority(lineCounts):
 	return maximum, count
 
 
-
+def syllableMajority(poem):
+	'''
+		Recieves poem. Makes a list of 0s with length of largest upper syl count.
+		Counts the number of lines with syl counts.
+		4 lines of 10 syl; 8 lines of 11 syl, etc.
+		Returns lineCounts (list)
+	'''
+# create a list w/ length of the largest upper bound, all w/ values of 0
+	counter = 0
+	for line in poem:
+		if line['lower'] == line['upper']:
+			if counter < line['upper']:
+				counter = line['upper']
+	lineCounts = [0]*counter
+# go through the lines to count lines of X syl
+	counter = 0
+	for line in poem:
+		if (line['upper'] == line['lower']):
+			counter = line['upper']
+			lineCounts[counter-1] = lineCounts[counter-1] + 1
+	return lineCounts
 
 def procLine(line):
 	'''

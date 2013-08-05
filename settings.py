@@ -13,6 +13,7 @@ import string
 import sys
 import pprint
 import string
+from copy import deepcopy
 
 '''
 	Settings file with:
