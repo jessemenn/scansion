@@ -1,45 +1,20 @@
-poems to use:
+popewindsor forest:
+		      LineCounts:  [0, 0, 0, 0, 0, 0, 0, 0, 3, 337, 42, 10, 2, 24]
+	      Most frequent syllable count:  10  appears:  337
+	      freqLineLen =  10
+	        Totaled up:  [-103, 146, -201, 285, -251, 138, -257, 250, -290, 306]   second for loop
+	      finalScores:  [-1, 1, -1, 1, -1, 1, -1, 1, -1, 1]   final for loop
+	bacchiac        agreements:  5  disagreements:  5 diff:  0
+	molossusiac     agreements:  5  disagreements:  5 diff:  0
+	tribrachiac     agreements:  5  disagreements:  5 diff:  0
+	spondaic        agreements:  5  disagreements:  5 diff:  0
+	creticac        agreements:  4  disagreements:  6 diff:  -2
+	amphibrachiac   agreements:  6  disagreements:  4 diff:  2
+	pyrrhic         agreements:  5  disagreements:  5 diff:  0
+	dactylic        agreements:  5  disagreements:  5 diff:  0
+	antibacchiac    agreements:  6  disagreements:  4 diff:  2
+	trochaic        agreements:  0  disagreements:  10 diff:  -10
+	iambic          agreements:  10  disagreements:  0 diff:  10
+	anapestic       agreements:  4  disagreements:  6 diff:  -2
 
-browning_love_thee.txt
-[-9, 3, -7, 2, -11, 5, -11, 5, -7, 13]
-[-1, 1, -1, 1, -1, 1, -1, 1, -1, 1]]
-
-donne_holy_sonnet_xiv.txt
-[-2, 0, -4, 2, 0, 4, -4, 1, -3, 0]
-[-1, 0, -1, 1, 0, 1, -1, 1, -1, 0]
-
-dulce_et_decorum_est.txt
-[-2, 5, -9, 6, -2, 5, -10, 6, -10, 11]
-[-1, 1, -1, 1, -1, 1, -1, 1, -1, 1]
-
-elegy_country_churchyard.txt
-[-40, 39, -64, 72, -71, 32, -76, 40, -75, 78]
-[-1, 1, -1, 1, -1, 1, -1, 1, -1, 1]
-
-frost_birches.txt
-[-12, -6, -12, 20, -16, 13, -16, 15, -19, 17]
-[-1, -1, -1, 1, -1, 1, -1, 1, -1, 1]
-
-shakespeare_sonnet_18.txt
-[-7, 3, -6, 6, -11, 2, -8, 7, -9, 5]
-[-1, 1, -1, 1, -1, 1, -1, 1, -1, 1]
-
-pope_windsor_forest.txt
-[-103, 146, -201, 285, -251, 138, -257, 250, -290, 306]
-[-1, 1, -1, 1, -1, 1, -1, 1, -1, 1]
-
-collier.txt
-[-84, 31, -105, 107, -128, 65, -102, 65, -116, 92]
-[-1, 1, -1, 1, -1, 1, -1, 1, -1, 1]
-
-paradise_lost.txt
-[-2714, 1900, -4402, 2510, -4205, 2569, -4186, 1790, -4007, 4434]
-[-1, 1, -1, 1, -1, 1, -1, 1, -1, 1]
-
-sonnet_56.txt
-[-6, 8, -10, 6, -6, 4, -6, -2, -4, 10]
-[-1, 1, -1, 1, -1, 1, -1, -1, -1, 1]
-
-sonnet_xv.txt
-[-5, -6, -4, 10, -8, 2, -8, 6, -8, 7]
-[-1, -1, -1, 1, -1, 1, -1, 1, -1, 1]
+browning

@@ -60,11 +60,13 @@ def lineMajority(lineCounts):
 	'''
 	maximum = 0	
 	count = 0
+	syl = 1
 	for line in lineCounts:
+		count += 1
 		if line >= maximum:
 			maximum = line
-			count += 1
-	return maximum, count
+			syl = count
+	return maximum, syl
 
 
 def syllableMajority(poem):
