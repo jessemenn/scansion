@@ -42,8 +42,6 @@ def beginStress(poem):
 	finalScores = buildFullArray(poem, freqLineLen)
 	checkForms(finalScores)
 
-
-
 def checkForms(finalScores):
 	'''
 		Receives finalScores from beginStress.

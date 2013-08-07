@@ -1,0 +1,16 @@
+annus.txt
+browning_love_thee.txt
+chaucer.txt
+collier.txt
+donne_holy_sonnet_xiv.txt
+dulce_et_decorum_est.txt
+elegy_country_churchyard.txt
+frost_birches.txt
+frost_woods.txt
+paradise_lost.txt
+pope_windsor_forest.txt
+shakespeare_sonnet_18.txt
+sonnet_56.txt
+sonnet_xv.txt
+thomson_seasons.txt
+wordsworth_to_a_distant_friend
