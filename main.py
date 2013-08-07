@@ -40,7 +40,6 @@ def beginStress(poem):
 	lineLen, freqLineLen = lineMajority(lineCounts)
 	print "     ","Most frequent syllable count: ", freqLineLen, " appears: ", lineLen
 	finalScores = buildFullArray(poem, freqLineLen)
-
 	checkForms(finalScores)
 
 
@@ -121,7 +120,6 @@ def buildFullArray(poem, freqLineLen):
 	'''
 # create a list of length w/ the largest upper bound, all w/ values of 0
 	maximum = 0
-	print "      freqLineLen = ", freqLineLen
 	for line in poem:
 		if line['lower'] == line['upper'] == freqLineLen:
 			if maximum < line['upper']:
@@ -134,7 +132,7 @@ def buildFullArray(poem, freqLineLen):
 			for item in line['stressArray']:
 				finalScores[counter] += item
 				counter += 1
-	print "        Totaled up: ", finalScores, "  second for loop"
+	print "      Totaled up: ", finalScores
 # Turn finalScores into merely -1, 0, 1	(to check for stress patterns)
 	counter = 0
 	for item in finalScores:
@@ -143,7 +141,7 @@ def buildFullArray(poem, freqLineLen):
 		if item > 0:
 			finalScores[counter] = 1
 		counter += 1
-	print "      finalScores: ", finalScores, "  final for loop"
+	print "      finalScores: ", finalScores
 	return finalScores
 
 
