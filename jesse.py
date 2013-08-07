@@ -198,7 +198,7 @@ def dumbGuess(lowercase):
 				lastVowel = True
 		if not isVowel:
 			lastVowel = False
-	if (lowercase[-2:] == 'es') or (lowercase[-1] == 'e'):
+	if (lowercase[-2:] == 'es') or (lowercase[-1:] == 'e'):
 		numVowels = numVowels -1
 	return numVowels, numVowels ## low, and high
 
