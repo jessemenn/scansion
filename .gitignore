@@ -1,11 +1,6 @@
 .DS_STORE
+*.pyc
 output.txt
-output_strip.txt
-syllables.txt
-dove-like.txt
-jesse.pyc
-settings.pyc
-syl_old.py
-ulysses.txt
-scratch_notes/scratch
 proc.sh
+scratch_notes/*
+syllables.txt
