@@ -6,6 +6,66 @@
 
 from settings import *
 
+def getMerits(merits, forms, finalScores):
+	'''
+		Recieves blank dictionary, merits (agree/disagree/difference) and
+			forms (dict of possible forms, each possible form a list).
+		Fills in the values for the merits.
+	'''
+	for key in forms.keys():
+		tester = forms[key]
+		counter = 0
+		for item in finalScores:
+			if item == tester[counter]:
+				#print "Slot: ", counter, " | ", "finalScores: ", item, " | ", "form: ", tester[counter], " agree!"
+				merits['agree']	+= 1
+			elif item != tester[counter]:
+				#print "Slot: ", counter, " | ", "finalScores: ", item, " | ", "form: ", tester[counter], " DISAGREE"
+				merits['disagree'] += 1
+			counter += 1
+		print key.ljust(15), "agreements: ", merits['agree'], " disagreements: ", merits['disagree'], "diff: ", (merits['agree']-merits['disagree'])
+		merits['agree'] = 0
+		merits['disagree'] = 0
+		merits['difference'] = 0
+
+def checkForms(finalScores):
+	'''
+		Receives finalScores from beginStress.
+		Generates possible forms (generateForms)
+		Checks against possible forms of poetic meter (iambic + pentameter for example).
+		Calls merits.
+		prints merits
+		prints likely form
+	'''
+	maximum = len(finalScores)
+	forms = {'pyrrhic': [], 'iambic': [], 'trochaic': [], 'spondaic': []}
+	generateForms(maximum, forms)
+
+	merits = {"agree": 0, "disagree": 0, "diff": 0}
+	getMerits(merits, forms, finalScores)
+
+def generateForms(maximum, forms):
+	# we want feet, not syllables
+	feet = maximum / 2
+
+	# don't forget needa adjust for 3-syl feet
+	forms['pyrrhic'] = PYRRHUS*feet
+	forms['iambic'] = IAMB*feet
+	forms['trochaic'] = TROCHEE*feet
+	forms['spondaic'] = SPONDEE*feet
+	forms['tribrachiac'] = TRIBRACH*feet
+	forms['dactylic'] = DACTYL*feet
+	forms['amphibrachiac'] = AMPHIBRACH*feet
+	forms['anapestic'] = ANAPEST*feet
+	forms['bacchiac'] = BACCHIUS*feet
+	forms['antibacchiac'] = ANTIBACCHIUS*feet
+	forms['creticac'] = CRETIC*feet
+	forms['molossusiac'] = MOLOSSUS*feet
+
+	if ((maximum % 2) == 1):
+		for key in forms:
+			forms[key].append(-1)
+
 def prettyOutput(poem, wordCount=True, lineCount=True, numberLines=True, noteSubstitution=True,noteDictionary=False):
         '''
                 Takes a poem, a list of special 'line' datatype as input. Prints it out in a readable format. Default is to include
@@ -50,6 +110,45 @@ def printStress(poem):
 		output += '\n' # and add a new line to make purdy
 	print output
 
+def buildFullArray(poem, freqLineLen):
+	'''
+	Check each slot of line['stressArray'] and add/subtract from corresponding slot
+	in finalScores. By the end we'll know whether each syllable position is stressed
+	(positive) or unstressed (negative) or we're just plum not sure (zero). The higher
+	the absolute value of each slot, the surer we are.
+	Also receives freqLineLen (the syllable count)
+	For example, we'll end with something like:
+		[-10, 4, -8, 1, -12, 6, -12, 4, -6, 13, 0, 0]
+	which will be turned into:
+		[-1, 1, -1, 1, -1, 1, -1, 1, -1, 1, 0, 0]
+
+	Returns finalScores (The last list consisting of only of -1, 0, 1)
+	'''
+# create a list of length w/ the largest upper bound, all w/ values of 0
+	maximum = 0
+	for line in poem:
+		if line['lower'] == line['upper'] == freqLineLen:
+			if maximum < line['upper']:
+				maximum = line['upper']
+	finalScores = [0]*maximum
+# Add or subtract from finalScores based on stressArray
+	for line in poem:
+		if line['lower'] == line['upper'] == freqLineLen:
+			counter = 0
+			for item in line['stressArray']:
+				finalScores[counter] += item
+				counter += 1
+	print "      Totaled up: ", finalScores
+# Turn finalScores into merely -1, 0, 1	(to check for stress patterns)
+	counter = 0
+	for item in finalScores:
+		if item < 0:
+			finalScores[counter] = -1
+		if item > 0:
+			finalScores[counter] = 1
+		counter += 1
+	print "      finalScores: ", finalScores
+	return finalScores
 
 def lineMajority(lineCounts):
 	'''

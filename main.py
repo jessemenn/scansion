@@ -21,9 +21,37 @@ def main(filename):
 	printBlank(1, 'entering main') ## debug
 	poem = [] #the poem, by line, will go here
 	poem = openFile(poem, filename)
+	metadata = {'title': "", 'author': "", 'date': "", 'nation': ""}
+	getMetadata(poem, metadata)
+	outputMetadata(metadata)
+
 	poem = makeWords(poem)
 	prettyOutput(poem,noteDictionary=True)
 	beginStress(poem)
+
+def outputMetadata(metadata):
+	print "title | ", metadata['title']
+	print "author| ", metadata['author']
+	print "date  | ", metadata['date']
+	print "nation| ", metadata['nation']
+
+def getMetadata(poem, metadata):
+	'''
+		Gets metadata information from first four lines of the poem
+		then removes those four lines from the list (poem)
+	'''
+	for word in poem[0]:
+		metadata['title'] += word
+		metadata['title'] += " "
+	for word in poem[1]:
+		metadata['author'] += word
+		metadata['author'] += " "
+	for word in poem[2]:
+		metadata['date'] += word
+	for word in poem[3]:
+		metadata['nation'] += word
+	for x in range(4): ## delete first four lines of the list/poem
+		del poem[0]
 
 def beginStress(poem):
 	'''
@@ -42,43 +70,7 @@ def beginStress(poem):
 	finalScores = buildFullArray(poem, freqLineLen)
 	checkForms(finalScores)
 
-def checkForms(finalScores):
-	'''
-		Receives finalScores from beginStress.
-		Generates possible forms (generateForms)
-		Checks against possible forms of poetic meter (iambic + pentameter for example).
-		Calls merits.
-		prints merits
-		prints likely form
-	'''
-	maximum = len(finalScores)
-	forms = {'pyrrhic': [], 'iambic': [], 'trochaic': [], 'spondaic': []}
-	generateForms(maximum, forms)
-	
-	merits = {"agree": 0, "disagree": 0, "diff": 0}
-	getMerits(merits, forms, finalScores)
 
-def getMerits(merits, forms, finalScores):
-	'''
-		Recieves blank dictionary, merits (agree/disagree/difference) and
-			forms (dict of possible forms, each possible form a list).
-		Fills in the values for the merits.
-	'''
-	for key in forms.keys():
-		tester = forms[key]
-		counter = 0
-		for item in finalScores:
-			if item == tester[counter]:
-				#print "Slot: ", counter, " | ", "finalScores: ", item, " | ", "form: ", tester[counter], " agree!"
-				merits['agree']	+= 1
-			elif item != tester[counter]:
-				#print "Slot: ", counter, " | ", "finalScores: ", item, " | ", "form: ", tester[counter], " DISAGREE"
-				merits['disagree'] += 1
-			counter += 1
-		print key.ljust(15), "agreements: ", merits['agree'], " disagreements: ", merits['disagree'], "diff: ", (merits['agree']-merits['disagree'])
-		merits['agree'] = 0
-		merits['disagree'] = 0
-		merits['difference'] = 0
 
 def generateForms(maximum, forms):
 	# we want feet, not syllables
@@ -101,49 +93,6 @@ def generateForms(maximum, forms):
 	if ((maximum % 2) == 1):
 		for key in forms:
 			forms[key].append(-1)
-
-def buildFullArray(poem, freqLineLen):
-	'''
-	Check each slot of line['stressArray'] and add/subtract from corresponding slot
-	in finalScores. By the end we'll know whether each syllable position is stressed
-	(positive) or unstressed (negative) or we're just plum not sure (zero). The higher
-	the absolute value of each slot, the surer we are.
-	Also receives freqLineLen (the syllable count)
-	For example, we'll end with something like:
-		[-10, 4, -8, 1, -12, 6, -12, 4, -6, 13, 0, 0]
-	which will be turned into:
-		[-1, 1, -1, 1, -1, 1, -1, 1, -1, 1, 0, 0]
-
-	Returns finalScores (The last list consisting of only of -1, 0, 1)
-	'''
-# create a list of length w/ the largest upper bound, all w/ values of 0
-	maximum = 0
-	for line in poem:
-		if line['lower'] == line['upper'] == freqLineLen:
-			if maximum < line['upper']:
-				maximum = line['upper']
-	finalScores = [0]*maximum
-# Add or subtract from finalScores based on stressArray
-	for line in poem:
-		if line['lower'] == line['upper'] == freqLineLen:
-			counter = 0
-			for item in line['stressArray']:
-				finalScores[counter] += item
-				counter += 1
-	print "      Totaled up: ", finalScores
-# Turn finalScores into merely -1, 0, 1	(to check for stress patterns)
-	counter = 0
-	for item in finalScores:
-		if item < 0:
-			finalScores[counter] = -1
-		if item > 0:
-			finalScores[counter] = 1
-		counter += 1
-	print "      finalScores: ", finalScores
-	return finalScores
-
-
-
 
 
 
